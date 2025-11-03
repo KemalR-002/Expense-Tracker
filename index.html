@@ -7,10 +7,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-between min-h-screen">
     <!-- Header content such as navbar with login/register feature -->
     <header>
-        <nav class="bg-gray-800 p-4 text-white flex justify-between items-center">
+        <nav class="bg-gray-800 p-4 text-white flex justify-between items-center" id="navHeader">
             <a href="index.html">
             <div class="text-lg font-bold">Expense Tracker</div></a>
             <div class="space-x-4">
@@ -23,7 +23,7 @@
     </header>
     <hr />
     <!-- Main content -->
-    <main>
+    <main class="flex-grow windows:mx-auto p-4 mobile:mx-2">
         <div class="container mx-auto p-4">
             <h1 class="text-2xl font-bold mb-4" id="welcomeText">Welcome to the Expense Tracker</h1>
             <p class="mb-4">Track your expenses easily and efficiently.</p>
@@ -33,32 +33,64 @@
 
         <!-- Add a button to add new data -->
         <div class="container mx-auto p-4">
-            <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Add New Expense</button>
-            <!-- Button to change currency -->
-            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded m-4">Change Currency</button>
+            <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" id="addExpenseBtn">Add New Expense</button>
+            <!-- Hidden Expense Form (toggle on click) -->
+            <div class="mt-4 hidden" id="expenseFormContainer">
+                <form class="max-w-md bg-white p-6 rounded shadow-md" id="expenseForm">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="expenseDate">Date</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expenseDate" type="date" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="expenseDescription">Description</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expenseDescription" type="text" placeholder="Enter description" required>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="expenseAmount">Amount (Rp)</label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="expenseAmount" type="number" placeholder="Enter amount in Rp" required>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                            Add Expense
+                        </button>
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" id="cancelExpense">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>                
+
+            <!-- Change currency -->
+            <div class="mt-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="currencySelect">Select Currency:</label>
+                <select id="currencySelect" class="border rounded px-2 py-1 focus:outline-none focus:ring focus:ring-blue-300e">
+                    <option value="IDR">Indonesian Rupiah (Rp)</option>
+                    <option value="USD">US Dollar ($)</option>
+                    <option value="EUR">Euro (€)</option>
+                </select>
+            </div>
         </div>
 
-
+        <!-- Expense list -->
         <div class="container mx-auto p-4">
-            <table class="min-w-full bg-white border border-gray-200">
+            <table class="min-w-full bg-white">
                 <thead>
                     <tr>
-                        <th class="py-2 px-4 border-b">Date</th>
-                        <th class="py-2 px-4 border-b">Description</th>
-                        <th class="py-2 px-4 border-b">Amount (Rp)</th>
+                        <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Date</th>
+                        <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Description</th>
+                        <th class="py-2 px-4 border-b border-gray-200 bg-gray-100 text-left text-sm font-semibold text-gray-700">Amount</th>
                     </tr>
                 </thead>
-                <tbody id="expense-table-body">
-                    <!-- Expense items will be dynamically added here -->
+                <tbody id="expenseTableBody">
+                    <!-- Expense rows will be added here dynamically -->
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="2" class="py-2 px-4 border-t font-bold text-right">Total:</td>
-                        <td id="total-amount" class="py-2 px-4 border-t font-bold">Rp 0</td>
-                    </tr>
-                </tfoot>
             </table>
+            <!-- Total -->
+            <div class="text-right font-bold mt-4">
+                Total: <span id="totalAmount">Rp 0</span>
+            </div>
         </div>
+
         <hr />
         <h1 class="text-2xl font-bold mt-4 mb-4  text-center uppercase">Expense Chart</h1>
         <!-- Add any chart to show the data -->
